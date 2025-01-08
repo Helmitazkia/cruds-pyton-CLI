@@ -35,7 +35,7 @@ def import_text_to_excel(input_file, output_file):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "tabel_m_customer.txt"
+    input_file = "parse_customer.txt"
     output_file = "customer_data.xlsx"
     
     import_text_to_excel(input_file, output_file)
