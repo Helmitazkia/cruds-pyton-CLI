@@ -10,69 +10,43 @@ from datetime import datetime
 import os
 import time
 
-# # Fungsi untuk mengambil screenshot seluruh halaman dengan scrolling
-# def capture_entire_page_with_scrolling(driver, save_path):
-#     """Capture the entire page as a single screenshot by scrolling."""
-#     # Ambil ukuran keseluruhan halaman
-#     total_width = driver.execute_script("return document.body.scrollWidth")
-#     total_height = driver.execute_script("return document.body.scrollHeight")
 
-#     # Set ukuran jendela browser ke lebar halaman
-#     driver.set_window_size(total_width, driver.execute_script("return window.innerHeight"))
 
-#     # Scroll dan ambil screenshot di setiap bagian
-#     stitched_image = Image.new('RGB', (total_width, total_height))
-#     scroll_height = driver.execute_script("return window.innerHeight")
-#     for scroll_offset in range(0, total_height, scroll_height):
-#         driver.execute_script(f"window.scrollTo(0, {scroll_offset})")
-#         time.sleep(1)  # Tunggu halaman selesai memuat
-#         screenshot_path = f"temp_screenshot_{scroll_offset}.png"
-#         driver.save_screenshot(screenshot_path)
 
-#         # Tempelkan screenshot ke gambar utama
-#         temp_image = Image.open(screenshot_path)
-#         stitched_image.paste(temp_image, (0, scroll_offset))
-#         os.remove(screenshot_path)
-
-#     # Simpan gambar akhir
-#     stitched_image.save(save_path)
-
-# Fungsi untuk mengambil screenshot dari seluruh halaman dengan scrolling
 def capture_entire_page_with_scrolling(driver, save_path):
-    # Mendapatkan tinggi total halaman web
+ 
     total_height = driver.execute_script("return document.body.scrollHeight")
-    # Mendapatkan tinggi viewport (area yang terlihat di browser)
     viewport_height = driver.execute_script("return window.innerHeight")
 
-    # Menyimpan screenshot sementara dalam daftar
+   
     stitched_image = []
-    # Loop untuk menggulir halaman hingga akhir
+  
     for scroll_position in range(0, total_height, viewport_height):
-        # Menggulir ke posisi tertentu
+      
         driver.execute_script(f"window.scrollTo(0, {scroll_position})")
-        time.sleep(1)  # Menunggu agar halaman selesai menggulir
-        # Menyimpan screenshot dari viewport saat ini
+        time.sleep(1) 
+      
         screenshot_path = f"temp_screenshot_{scroll_position}.png"
         driver.save_screenshot(screenshot_path)
         stitched_image.append(screenshot_path)
 
-    # Menggabungkan semua screenshot secara vertikal
-    images = [Image.open(img) for img in stitched_image]  # Membuka semua screenshot sementara
-    total_width = images[0].width  # Lebar keseluruhan halaman (semua screenshot memiliki lebar yang sama)
-    stitched_height = sum(img.height for img in images)  # Menjumlahkan tinggi semua screenshot
-    # Membuat gambar baru untuk menyatukan screenshot
+    
+    images = [Image.open(img) for img in stitched_image]  
+    total_width = images[0].width 
+    stitched_height = sum(img.height for img in images) 
+ 
     stitched_image_result = Image.new("RGB", (total_width, stitched_height))
-    current_height = 0  # Posisi tinggi awal untuk menyisipkan screenshot
+    current_height = 0 
 
-    # Menyisipkan screenshot satu per satu ke gambar baru
+    
     for img in images:
         stitched_image_result.paste(img, (0, current_height))
-        current_height += img.height  # Memperbarui posisi tinggi untuk screenshot berikutnya
+        current_height += img.height  
 
-    # Menyimpan gambar hasil penggabungan
+    
     stitched_image_result.save(save_path)
 
-    # Menghapus screenshot sementara setelah selesai
+   
     for img in stitched_image:
         os.remove(img)
 
@@ -82,7 +56,7 @@ if __name__ == "__main__":
     options = Options()
 
     options.add_argument("--disable-gpu")
-    options.add_argument("--start-maximized")  # Buka browser dalam ukuran penuh
+    options.add_argument("--start-maximized")  
     options.add_argument("--ignore-certificate-errors")  
     options.add_argument("--disable-web-security")
     options.add_argument("--allow-running-insecure-content")
