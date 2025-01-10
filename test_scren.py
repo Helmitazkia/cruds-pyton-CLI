@@ -75,10 +75,13 @@ if __name__ == "__main__":
             EC.element_to_be_clickable((By.LINK_TEXT, "Upcoming"))
         )
         upcoming_menu.click()
+        
+        driver.execute_script("window.scrollTo(0, 150);")
+        time.sleep(1) 
 
         # Klik film "1 Imam 2 Makmum"
         movie = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.LINK_TEXT, "1 Imam 2 Makmum"))
+            EC.element_to_be_clickable((By.LINK_TEXT, "1 Kakak 7 Ponakan"))
         )
         movie.click()
         # Menunggu hingga elemen 'body' tersedia setelah halaman baru dimuat
