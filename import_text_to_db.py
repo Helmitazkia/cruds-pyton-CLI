@@ -1,6 +1,17 @@
 import mysql.connector
-import pandas as pd
-import numpy as np
+import os
+
+def process_line(line):
+    """
+    Memproses satu baris teks untuk memisahkan nama, email, dan nomor telepon.
+    """
+    parts = line.split()
+    if len(parts) < 3:
+        return None  # Baris tidak valid
+    name = " ".join(parts[:-2])
+    email = parts[-2]
+    phone = parts[-1]
+    return name, email, phone
 
 def import_text_to_db(txt_file, db_config):
     """
@@ -11,85 +22,66 @@ def import_text_to_db(txt_file, db_config):
     db_config (dict): Konfigurasi untuk koneksi database.
     """
     try:
-     
-        df = pd.read_csv(
-            txt_file, 
-            delimiter=',',  
-            names=['customer_name', 'email', 'phone_number'],  
-            na_filter=True,  
-            dtype=str  
-        )
+        data = []
 
-        df = df.replace({np.nan: None})
+        with open(txt_file, 'r') as file:
+            for line in file:
+                processed = process_line(line.strip())
+                if processed:
+                    data.append(processed)
 
-     
-        for column in df.columns:
-            if df[column].dtype == 'object': 
-                df[column] = df[column].apply(lambda x: x.strip() if x else x)
-
-      
-        print("Debugging DataFrame:")
-        print(df)
+        if not data:
+            print(f"File {txt_file} tidak mengandung data yang valid.")
+            return False
 
         db = mysql.connector.connect(**db_config)
         cursor = db.cursor()
 
-    
         sql = """INSERT INTO tabel_m_customer 
                  (customer_name, email, phone_number) 
                  VALUES (%s, %s, %s)"""
 
-       
-        values = df.values.tolist()
-
-    
-        cursor.executemany(sql, values)
-
-       
+        cursor.executemany(sql, data)
         db.commit()
 
-      
-        print(f"{cursor.rowcount} rows successfully inserted into the database.")
+        print(f"{cursor.rowcount} rows successfully inserted from {txt_file}")
 
-        # Menutup koneksi database
         cursor.close()
         db.close()
 
         return True
 
-    # Penanganan error jika file tidak ditemukan
     except FileNotFoundError:
         print(f"Error: File '{txt_file}' tidak ditemukan.")
         return False
-    # Penanganan error jika terjadi kesalahan pada database
     except mysql.connector.Error as db_error:
         print(f"Database error: {db_error}")
         if 'db' in locals():
             db.close()
         return False
-    # Penanganan error umum lainnya
     except Exception as e:
         print(f"Error: {str(e)}")
         if 'db' in locals():
             db.close()
         return False
 
-# Contoh penggunaan
 if __name__ == "__main__":
-    # Konfigurasi database
     db_config = {
-        "host": "localhost",  # Host atau alamat server database
-        "user": "root",  # Username untuk login ke database
-        "password": "",  # Password untuk login
-        "database": "customer_db"  # Nama database yang akan digunakan
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "customer_db"
     }
     
-    # File input
-    input_file = "customer_import.txt"  # Lokasi file teks input
-    
-    # Jalankan fungsi untuk mengimpor data dari file teks ke database
-    result = import_text_to_db(input_file, db_config)
-    if result:
-        print("Data import berhasil dilakukan.")
-    else:
-        print("Data import gagal.")
+    folder_path = r"C:\PythonProjects\selesai_convert"
+
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith(".txt"):
+            file_path = os.path.join(folder_path, file_name)
+            result = import_text_to_db(file_path, db_config)
+            if result:
+                print(f"Import berhasil untuk file: {file_path}")
+                os.remove(file_path)
+                print(f"File {file_name} telah dihapus.")
+            else:
+                print(f"Import gagal untuk file: {file_path}")
