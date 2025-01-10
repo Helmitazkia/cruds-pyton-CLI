@@ -32,6 +32,7 @@ def import_text_to_csv(input_file, output_file):
                   index=False,
                   sep=',')
         
+        
         print(f"Data successfully imported and saved to {output_file}")
         return True
         
@@ -41,6 +42,6 @@ def import_text_to_csv(input_file, output_file):
 
 if __name__ == "__main__":
     input_file = r"C:\PythonProjects\selesai_convert\convert_customer.txt"
-    output_file = r"C:\PythonProjects\\selesai_parse\convert_customer.csv"
+    output_file = r"C:\PythonProjects\selesai_import\convert_customer.csv"
     
     import_text_to_csv(input_file, output_file)

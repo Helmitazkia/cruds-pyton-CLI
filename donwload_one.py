@@ -82,6 +82,7 @@ if __name__ == "__main__":
             EC.element_to_be_clickable((By.ID, "btn-entry-select"))
         ).click()
 
+        time.sleep(2)
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "tr[id^='tableRow_']"))
         )
