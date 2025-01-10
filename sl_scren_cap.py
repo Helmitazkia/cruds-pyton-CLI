@@ -87,6 +87,15 @@ if __name__ == "__main__":
         )
         select = Select(dropdown)
         select.select_by_visible_text("BEKASI")
+          
+        cinemaSearch = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.NAME, "cinema-search"))
+        )
+
+        cinemaSearch.clear()
+        cinemaSearch.send_keys("CIPLAZ CIBITUNG XXI")
+        time.sleep(1)
+        
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.LINK_TEXT, "CIPLAZ CIBITUNG XXI"))
         )  
