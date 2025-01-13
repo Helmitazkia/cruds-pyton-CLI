@@ -1,0 +1,22 @@
+2025-01-13 10:38:39,585 - INFO - Memulai proses Import data dari database ke Excel.
+2025-01-13 10:38:39,585 - INFO - Query yang dieksekusi: SELECT customer_id, customer_name, email, phone_number, created_at FROM tabel_m_customer
+2025-01-13 10:38:39,622 - INFO - Query berhasil dieksekusi. Jumlah data: 5 baris, 5 kolom.
+2025-01-13 10:38:39,632 - INFO -  customer_id  customer_name                             email phone_number          created_at
+          67   Helmi Tazkia   helmi.tazkia@nirwanalestari.com 085781046500 2025-01-13 10:37:28
+          68     Hardi Rama     hardi.rama@nirwanalestari.com 082512462335 2025-01-13 10:37:28
+          69   Asep Mubarok   asep.mubarok@nirwanalestari.com 012717244355 2025-01-13 10:37:28
+          70 Enjang Mulyana enjang.mulyana@nirwanalestari.com 085125175334 2025-01-13 10:37:28
+          71         Fauzan         fauzan@nirwanalestari.com 097125512472 2025-01-13 10:37:28
+2025-01-13 10:38:40,235 - INFO - Data berhasil Di Import ke file C:\PythonProjects\selesai_import\customer_data_20250113_103839.xlsx.
+2025-01-13 10:38:40,235 - INFO - Proses Import Sukses.
+2025-01-13 10:52:24,966 - INFO - Memulai proses Import data dari database ke Excel.
+2025-01-13 10:52:24,967 - INFO - Query yang dieksekusi: SELECT customer_id, customer_name, email, phone_number, created_at FROM tabel_m_customer
+2025-01-13 10:52:25,028 - INFO - Query berhasil dieksekusi. Jumlah data: 5 baris, 5 kolom.
+2025-01-13 10:52:25,038 - INFO -  customer_id  customer_name                             email phone_number          created_at
+          92   Helmi Tazkia   helmi.tazkia@nirwanalestari.com 085781046500 2025-01-13 10:51:43
+          93     Hardi Rama     hardi.rama@nirwanalestari.com 082512462335 2025-01-13 10:51:43
+          94   Asep Mubarok   asep.mubarok@nirwanalestari.com 012717244355 2025-01-13 10:51:43
+          95 Enjang Mulyana enjang.mulyana@nirwanalestari.com 085125175334 2025-01-13 10:51:43
+          96         Fauzan         fauzan@nirwanalestari.com 097125512472 2025-01-13 10:51:43
+2025-01-13 10:52:25,858 - INFO - Data berhasil Di Import ke file C:\PythonProjects\selesai_import\customer_data_20250113_105225.xlsx.
+2025-01-13 10:52:25,859 - INFO - Proses Import Sukses.
