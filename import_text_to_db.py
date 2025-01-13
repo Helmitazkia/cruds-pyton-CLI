@@ -1,5 +1,8 @@
 import mysql.connector
 import os
+from config import setup_logger 
+
+logger = setup_logger(log_folder="logs", log_filename="import_text_to_db")
 
 def process_line(line):
     """
@@ -29,9 +32,11 @@ def import_text_to_db(txt_file, db_config):
                 processed = process_line(line.strip())
                 if processed:
                     data.append(processed)
+                    
+            logger.info(f"Data Imported :\n {data}")
 
         if not data:
-            print(f"File {txt_file} tidak mengandung data yang valid.")
+            logger.info(f"File {txt_file} tidak mengandung data yang valid.")
             return False
 
         db = mysql.connector.connect(**db_config)
@@ -44,7 +49,7 @@ def import_text_to_db(txt_file, db_config):
         cursor.executemany(sql, data)
         db.commit()
 
-        print(f"{cursor.rowcount} rows successfully inserted from {txt_file}")
+        logger.info(f"{cursor.rowcount} rows successfully inserted from \n {txt_file}")
 
         cursor.close()
         db.close()
@@ -52,15 +57,15 @@ def import_text_to_db(txt_file, db_config):
         return True
 
     except FileNotFoundError:
-        print(f"Error: File '{txt_file}' tidak ditemukan.")
+        logger.info(f"Error: File '{txt_file}' tidak ditemukan.")
         return False
     except mysql.connector.Error as db_error:
-        print(f"Database error: {db_error}")
+        logger.error(f"Database error: {db_error}")
         if 'db' in locals():
             db.close()
         return False
     except Exception as e:
-        print(f"Error: {str(e)}")
+        logger.error(f"Error: {str(e)}")
         if 'db' in locals():
             db.close()
         return False
@@ -80,8 +85,8 @@ if __name__ == "__main__":
             file_path = os.path.join(folder_path, file_name)
             result = import_text_to_db(file_path, db_config)
             if result:
-                print(f"Import berhasil untuk file: {file_path}")
+                logger.info(f"Import berhasil untuk file: {file_path}")
                 os.remove(file_path)
-                print(f"File {file_name} telah dihapus.")
+                logger.info(f"File {file_name} telah dihapus.")
             else:
-                print(f"Import gagal untuk file: {file_path}")
+                logger.error(f"Import gagal untuk file: {file_path}")

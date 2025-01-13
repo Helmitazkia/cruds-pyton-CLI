@@ -13,7 +13,7 @@ import os
 from datetime import datetime
 from config import setup_logger 
 
-logger = setup_logger(log_folder="logs", log_filename="importDb_excel")
+logger = setup_logger(log_folder="logs", log_filename="import_db_to_excel")
 
 def export_db_to_excel(db_config, query, output_folder):
     try:
